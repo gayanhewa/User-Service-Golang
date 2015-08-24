@@ -1,26 +1,24 @@
-# Go Development Env
+# Go REST API 
 
-This repo helps you get started with Go development with a Vagrant env.
+This repo helps you get started with Go development with a Docker container env.
 
-Requirements
- - vagrant : Latest
- - ansible : Must be installed on host for provisioning the vm
+To get started , clone the repo.
+
+Build the application
+
+```
+    docker build -t myapp .
+```
+
+Deploy the container
+
+```
+    docker run --publish 6060:9091 --name myapp --myapp
+
+```
+
+TODO :
+
+- Extract the Mongo URL's from the Repositories. ie. /app/repos/UserRepository 
 
 
-The VM gets a the IP defined in the Vagrant file assigned.
-
-  ```
-
-    config.vm.network :private_network, ip: "192.168.19.20"
-
-  ```
-
-The sync directory with the VM is located at,
-
- 
-
-        config.vm.synced_folder ".", "/home/vagrant/go/project"
-
- 
-
-- The provisioning scripts are still immature, but you can hack and fix any issues if you are brave. Don't forget to send a pull request if you do.

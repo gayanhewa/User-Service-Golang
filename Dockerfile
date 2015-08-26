@@ -3,29 +3,34 @@
 FROM golang
 
 #Configure bunch
-WORKDIR /go
+RUN mkdir /bunch
+RUN mkdir /app
+
+ENV GOPATH /bunch
+WORKDIR /bunch
 RUN go get github.com/dkulchenko/bunch
 RUN go install github.com/dkulchenko/bunch
-RUN cp /go/bin/bunch /usr/bin;chmod 755 /usr/bin/bunch
+RUN pwd;ls bin
+RUN cp /bunch/bin/bunch /usr/bin/bunch 
 RUN which bunch
 
-RUN mkdir /app
 WORKDIR /app
-# Setup the app source
 ADD . /app
-RUN cp /go/bin/bunch /app/bin/bunch
+RUN bunch 
 
-RUN export GOPATH=/app
-RUN cd /app
+
+ENV GOPATH /app
+RUN pwd
+
 # Install my dependencies
-RUN /app/bin/bunch update 
+RUN bunch update 
 
 # Recompile the binaries
-RUN /app/bin/bunch rebuild
+RUN bunch rebuild
 
 
 # Launch the server 
-ENTRYPOINT /app/bin/bunch go run /app/server.go
+ENTRYPOINT bunch go run /app/server.go
 
 # Document that the service listens on port 8080.
 EXPOSE 9091
